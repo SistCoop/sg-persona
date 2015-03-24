@@ -13,7 +13,7 @@
 
     });
 
-    module.factory('ProductoRestangular', ['Restangular', 'sgPersona', function(Restangular, sgPersona) {
+    module.factory('PersonaRestangular', ['Restangular', 'sgPersona', function(Restangular, sgPersona) {
         return Restangular.withConfig(function(RestangularConfigurer) {
             RestangularConfigurer.setBaseUrl(sgPersona.restUrl);
         });
