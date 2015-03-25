@@ -4,18 +4,25 @@
 
     module.provider('sgPersona', function() {
 
-        var config = {};
-        config.restUrl = 'http://localhost:3000';
+        this.restUrl = 'http://localhost';
 
         this.$get = function() {
-            return config;
+            var restUrl = this.restUrl;
+            return {
+                getRestUrl: function() {
+                    return restUrl;
+                }
+            }
         };
 
+        this.setRestUrl = function(restUrl) {
+            this.restUrl = restUrl;
+        };
     });
 
     module.factory('PersonaRestangular', ['Restangular', 'sgPersona', function(Restangular, sgPersona) {
         return Restangular.withConfig(function(RestangularConfigurer) {
-            RestangularConfigurer.setBaseUrl(sgPersona.restUrl);
+            RestangularConfigurer.setBaseUrl(sgPersona.getRestUrl());
         });
     }]);
 

@@ -1,14 +1,14 @@
 {
   "name": "sg-persona",
   "description": "Restful factories for iso3166",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "filename": "sg-persona.min.js",
   "main": "./dist/sg-persona.min.js",
-  "homepage": "https://gitlab.com/SistCoopEE/ui-iso3166",
+  "homepage": "https://github.com/SistCoop/sg-persona",
   "author": "Carlos feria <carlosthe19916@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/SistCoopEE/ui-iso3166.git"
+    "url": "https://github.com/SistCoop/sg-persona.git"
   },
   "engines": {
     "node": ">= 0.9"
@@ -25,7 +25,7 @@
   "maintainers": [
     {
       "name": "Carlos feria",
-      "website": "https://gitlab.com/SistCoopEE/ui-iso3166"
+      "website": "https://github.com/SistCoop/sg-persona"
     }
   ],
   "dependencies": {

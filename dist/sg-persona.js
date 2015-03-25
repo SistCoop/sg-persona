@@ -1,21 +1,33 @@
-(function(){
+/**
+ * Restful factories for iso3166
+ * @version v1.0.2 - 2015-03-25 * @link https://github.com/SistCoop/sg-persona
+ * @author Carlos feria <carlosthe19916@gmail.com>
+ * @license MIT License, http://www.opensource.org/licenses/MIT
+ */(function(){
 
     var module = angular.module('sg-persona', ['restangular']);
 
     module.provider('sgPersona', function() {
 
-        var config = {};
-        config.restUrl = 'http://localhost:3000';
+        this.restUrl = 'http://localhost';
 
         this.$get = function() {
-            return config;
+            var restUrl = this.restUrl;
+            return {
+                getRestUrl: function() {
+                    return restUrl;
+                }
+            }
         };
 
+        this.setRestUrl = function(restUrl) {
+            this.restUrl = restUrl;
+        };
     });
 
     module.factory('PersonaRestangular', ['Restangular', 'sgPersona', function(Restangular, sgPersona) {
         return Restangular.withConfig(function(RestangularConfigurer) {
-            RestangularConfigurer.setBaseUrl(sgPersona.restUrl);
+            RestangularConfigurer.setBaseUrl(sgPersona.getRestUrl());
         });
     }]);
 
