@@ -62,6 +62,7 @@
     module.factory('SGEstadoCivil', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'estadosCiviles';
+        var urlCount = url + '/count';
 
         var modelMethos = {
             $new: function(id){
@@ -83,17 +84,15 @@
                 return PersonaRestangular.all(url).getList(queryParams);
             },
 
-
             $count: function(){
                 return PersonaRestangular.one(urlCount).get();
             },
-
 
             $disable: function(){
                 return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
             },
             $remove: function(id){
-                return PersonaRestangular.one(urlAlpha3Code, id).remove();
+                return PersonaRestangular.one(url, id).remove();
             }
         };
 
@@ -108,6 +107,7 @@
     module.factory('SGSexo', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'sexos';
+        var urlCount = url + '/count';
 
         var modelMethos = {
             $new: function(id){
@@ -129,17 +129,15 @@
                 return PersonaRestangular.all(url).getList(queryParams);
             },
 
-
             $count: function(){
                 return PersonaRestangular.one(urlCount).get();
             },
-
 
             $disable: function(){
                 return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
             },
             $remove: function(id){
-                return PersonaRestangular.one(urlAlpha3Code, id).remove();
+                return PersonaRestangular.one(url, id).remove();
             }
         };
 
@@ -154,6 +152,7 @@
     module.factory('SGTipoDocumento', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'tiposDocumentos';
+        var urlCount = url + '/count';
 
         var modelMethos = {
             $new: function(id){
@@ -191,7 +190,7 @@
                 return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
             },
             $remove: function(id){
-                return PersonaRestangular.one(urlAlpha3Code, id).remove();
+                return PersonaRestangular.one(url, id).remove();
             }
         };
 
@@ -206,6 +205,7 @@
     module.factory('SGTipoEmpresa', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'tiposEmpresa';
+        var urlCount = url + '/count';
 
         var modelMethos = {
             $new: function(id){
@@ -227,23 +227,15 @@
                 return PersonaRestangular.all(url).getList(queryParams);
             },
 
-            $searchByPersonaNatural: function(){
-                return PersonaRestangular.all(url).getList({tipoPersona: 'natural'});
-            },
-            $searchByPersonaJuridica: function(){
-                return PersonaRestangular.all(url).getList({tipoPersona: 'juridica'});
-            },
-
             $count: function(){
                 return PersonaRestangular.one(urlCount).get();
             },
-
 
             $disable: function(){
                 return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
             },
             $remove: function(id){
-                return PersonaRestangular.one(urlAlpha3Code, id).remove();
+                return PersonaRestangular.one(url, id).remove();
             }
         };
 
@@ -258,6 +250,7 @@
     module.factory('SGTipoPersona', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'tiposPersona';
+        var urlCount = url + '/count';
 
         var modelMethos = {
             $new: function(id){
@@ -279,23 +272,15 @@
                 return PersonaRestangular.all(url).getList(queryParams);
             },
 
-            $searchByPersonaNatural: function(){
-                return PersonaRestangular.all(url).getList({tipoPersona: 'natural'});
-            },
-            $searchByPersonaJuridica: function(){
-                return PersonaRestangular.all(url).getList({tipoPersona: 'juridica'});
-            },
-
             $count: function(){
                 return PersonaRestangular.one(urlCount).get();
             },
-
 
             $disable: function(){
                 return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
             },
             $remove: function(id){
-                return PersonaRestangular.one(urlAlpha3Code, id).remove();
+                return PersonaRestangular.one(url, id).remove();
             }
         };
 
@@ -310,6 +295,7 @@
     module.factory('SGPersonaNatural', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'personas/naturales';
+        var urlCount = url + '/count';
 
         var modelMethos = {
             $new: function(id){
@@ -331,17 +317,15 @@
                 return PersonaRestangular.all(url).getList(queryParams);
             },
 
-
             $count: function(){
                 return PersonaRestangular.one(urlCount).get();
             },
-
 
             $disable: function(){
                 return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
             },
             $remove: function(id){
-                return PersonaRestangular.one(urlAlpha3Code, id).remove();
+                return PersonaRestangular.one(url, id).remove();
             }
         };
 
@@ -356,6 +340,7 @@
     module.factory('SGPersonaJuridica', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'personas/juridicas';
+        var urlCount = url + '/count';
 
         var modelMethos = {
             $new: function(id){
@@ -377,17 +362,15 @@
                 return PersonaRestangular.all(url).getList(queryParams);
             },
 
-
             $count: function(){
                 return PersonaRestangular.one(urlCount).get();
             },
-
 
             $disable: function(){
                 return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
             },
             $remove: function(id){
-                return PersonaRestangular.one(urlAlpha3Code, id).remove();
+                return PersonaRestangular.one(url, id).remove();
             }
         };
 
