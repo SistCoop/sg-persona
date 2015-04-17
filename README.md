@@ -90,8 +90,8 @@ Los objetos tienen la siguiente estructura:
    "codigoPais": "String",
    "tipoDocumento": "String",
    "numeroDocumento": "String",
-   "apellidoPaterno": "String"
-   "apellidoMaterno": "String"
+   "apellidoPaterno": "String",
+   "apellidoMaterno": "String",
    "nombres": "String",
    "sexo": "String",
    "estadoCivil": "String",
@@ -113,7 +113,7 @@ Los objetos tienen la siguiente estructura:
    "codigoPais": "String",
    "tipoDocumento": "String",
    "numeroDocumento": "String",
-   "razonSocial": "String"
+   "razonSocial": "String",
    "nombreComercial": "String",
    "fechaConstitucion": "String",   
    "actividadPrincipal": "String",   
@@ -126,8 +126,8 @@ Los objetos tienen la siguiente estructura:
    "celular": "String",
    "email": "String",
    "representanteLegal": "{
-      tipoDocumento": String,
-      numeroDocumento": String
+      tipoDocumento: String,
+      numeroDocumento: String
    }"
 }
 ```
