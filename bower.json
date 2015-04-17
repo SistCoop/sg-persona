@@ -1,11 +1,11 @@
 {
     "name": "sg-persona",
-    "version": "1.0.2",
+    "version": "0.0.7",
     "main": "./dist/sg-persona.js",
-    "description": "Restful factories for iso3166",
+    "description": "Restful factories for persona",
     "repository": {
         "type": "git",
-        "url": "https://github.com/SistCoop/sg-persona.git"
+        "url": "https://github.com/sistcoop-restangularfiles/sg-persona.git"
     },
     "dependencies": {
         "lodash": ">=1.3.0 <2.5.0",

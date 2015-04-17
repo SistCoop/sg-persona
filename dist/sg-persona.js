@@ -1,9 +1,4 @@
-/**
- * Restful factories for iso3166
- * @version v1.0.2 - 2015-03-25 * @link https://github.com/SistCoop/sg-persona
- * @author Carlos feria <carlosthe19916@gmail.com>
- * @license MIT License, http://www.opensource.org/licenses/MIT
- */(function(){
+(function(){
 
     var module = angular.module('sg-persona', ['restangular']);
 
