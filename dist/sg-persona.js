@@ -314,7 +314,7 @@
                     tipoDocumento: tipoDocumento,
                     numeroDocumento: numeroDocumento
                 };
-                return PersonaRestangular.one(urlBuscar).get();
+                return PersonaRestangular.one(urlBuscar).get(params);
             },
             $search: function(queryParams){
                 return PersonaRestangular.all(url).getList(queryParams);
@@ -370,7 +370,7 @@
                     tipoDocumento: tipoDocumento,
                     numeroDocumento: numeroDocumento
                 };
-                return PersonaRestangular.one(urlBuscar).get();
+                return PersonaRestangular.one(urlBuscar).get(params);
             },
             $search: function(queryParams){
                 return PersonaRestangular.all(url).getList(queryParams);
