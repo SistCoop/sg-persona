@@ -159,7 +159,7 @@
                 }});
             },
             $save: function() {
-                return PersonaRestangular.one(id, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
+                return PersonaRestangular.one(url, this.abreviatura).customPUT(PersonaRestangular.copy(this),'',{},{});
             },
 
             $find: function(id){
