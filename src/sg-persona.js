@@ -290,6 +290,7 @@
     module.factory('SGPersonaNatural', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'personas/naturales';
+        var urlBuscar = url +'/buscar';
         var urlCount = url + '/count';
 
         var modelMethos = {
@@ -307,6 +308,13 @@
 
             $find: function(id){
                 return PersonaRestangular.one(url, id).get();
+            },
+            $findByTipoNumeroDocumento: function(tipoDocumento, numeroDocumento){
+                var params = {
+                    tipoDocumento: tipoDocumento,
+                    numeroDocumento: numeroDocumento
+                };
+                return PersonaRestangular.one(urlBuscar).get();
             },
             $search: function(queryParams){
                 return PersonaRestangular.all(url).getList(queryParams);
@@ -327,6 +335,9 @@
         PersonaRestangular.extendModel(url, function(obj) {
             return angular.extend(obj, modelMethos);
         });
+        PersonaRestangular.extendModel(urlBuscar, function(obj) {
+            return angular.extend(obj, modelMethos);
+        });
 
         return modelMethos;
 
@@ -335,6 +346,7 @@
     module.factory('SGPersonaJuridica', ['PersonaRestangular',  function(PersonaRestangular) {
 
         var url = 'personas/juridicas';
+        var urlBuscar = url +'/buscar';
         var urlCount = url + '/count';
 
         var modelMethos = {
@@ -353,6 +365,13 @@
             $find: function(id){
                 return PersonaRestangular.one(url, id).get();
             },
+            $findByTipoNumeroDocumento: function(tipoDocumento, numeroDocumento){
+                var params = {
+                    tipoDocumento: tipoDocumento,
+                    numeroDocumento: numeroDocumento
+                };
+                return PersonaRestangular.one(urlBuscar).get();
+            },
             $search: function(queryParams){
                 return PersonaRestangular.all(url).getList(queryParams);
             },
@@ -370,6 +389,9 @@
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
+            return angular.extend(obj, modelMethos);
+        });
+        PersonaRestangular.extendModel(urlBuscar, function(obj) {
             return angular.extend(obj, modelMethos);
         });
 
