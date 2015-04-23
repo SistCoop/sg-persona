@@ -146,7 +146,7 @@
 
     module.factory('SGTipoDocumento', ['PersonaRestangular',  function(PersonaRestangular) {
 
-        var url = 'tiposDocumentos';
+        var url = 'tipoDocumentos';
         var urlCount = url + '/count';
 
         var modelMethos = {
