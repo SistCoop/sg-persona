@@ -212,7 +212,7 @@
                 }});
             },
             $save: function() {
-                return PersonaRestangular.one(id, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
+                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
             },
 
             $find: function(id){
@@ -257,7 +257,7 @@
                 }});
             },
             $save: function() {
-                return PersonaRestangular.one(id, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
+                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
             },
 
             $find: function(id){
@@ -303,7 +303,7 @@
                 }});
             },
             $save: function() {
-                return PersonaRestangular.one(id, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
+                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
             },
 
             $find: function(id){
@@ -359,7 +359,7 @@
                 }});
             },
             $save: function() {
-                return PersonaRestangular.one(id, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
+                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
             },
 
             $find: function(id){
