@@ -94,7 +94,11 @@
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
 
         return modelMethos;
@@ -139,7 +143,11 @@
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
 
         return modelMethos;
@@ -192,7 +200,11 @@
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
 
         return modelMethos;
@@ -237,7 +249,11 @@
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
 
         return modelMethos;
@@ -282,7 +298,11 @@
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
 
         return modelMethos;
@@ -335,10 +355,18 @@
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
         PersonaRestangular.extendModel(urlBuscar, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
 
         return modelMethos;
@@ -391,10 +419,18 @@
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
         PersonaRestangular.extendModel(urlBuscar, function(obj) {
-            return angular.extend(obj, modelMethos);
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
         });
 
         return modelMethos;
