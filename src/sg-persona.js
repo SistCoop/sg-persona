@@ -415,6 +415,13 @@
             },
             $remove: function(id){
                 return PersonaRestangular.one(url, id).remove();
+            },
+
+            $addAccionista: function(obj){
+                return PersonaRestangular.one(url, this.id).post(obj);
+            },
+            $getAccionistas: function(){
+                return PersonaRestangular.one(url+'/'+this.id+'/accionistas').getList();
             }
         };
 
