@@ -2,7 +2,7 @@
 
 (function(){
 
-    var module = angular.module('sg-persona', ['restangular']);
+    var module = angular.module('sg-persona', ['restangular', 'ngFileUpload']);
 
     module.provider('sgPersona', function() {
 
@@ -309,7 +309,7 @@
 
     }]);
 
-    module.factory('SGPersonaNatural', ['PersonaRestangular',  function(PersonaRestangular) {
+    module.factory('SGPersonaNatural', ['PersonaRestangular', 'Upload',  function(PersonaRestangular, Upload) {
 
         var url = 'personas/naturales';
         var urlBuscar = url +'/buscar';
@@ -347,10 +347,25 @@
             },
 
             $disable: function(){
-                return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
+                return PersonaRestangular.one(url, this.id).all('disable').post();
             },
             $remove: function(id){
                 return PersonaRestangular.one(url, id).remove();
+            },
+
+            $setFoto: function(file){
+                var urlFile = PersonaRestangular.one(url, this.id).all('foto').getRestangularUrl();
+                return Upload.upload({
+                    url: urlFile,
+                    file: file
+                });
+            },
+            $setFirma: function(file){
+                var urlFile = PersonaRestangular.one(url, this.id).all('firma').getRestangularUrl();
+                return Upload.upload({
+                    url: urlFile,
+                    file: file
+                });
             }
         };
 
