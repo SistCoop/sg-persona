@@ -426,18 +426,25 @@
             },
 
             $disable: function(){
-                return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
+                return PersonaRestangular.one(url, this.id).all('disable').post();
             },
             $remove: function(id){
                 return PersonaRestangular.one(url, id).remove();
             },
 
-            $addAccionista: function(obj){
-                return PersonaRestangular.one(url, this.id).post(obj);
+            $getAccionistas: function(queryParams){
+                return PersonaRestangular.one(url, this.id).all('accionistas').getList(queryParams);
             },
-            $getAccionistas: function(){
-                return PersonaRestangular.one(url+'/'+this.id+'/accionistas').getList();
+            $addAccionista: function(obj){
+                return PersonaRestangular.one(url, this.id).all('accionistas').post(obj);
+            },
+            $updateAccionista: function (id, obj) {
+                return PersonaRestangular.one(url, this.id).one('accionistas', id).customPUT(PersonaRestangular.copy(obj), '', {}, {});
+            },
+            $removeAccionista: function (id) {
+                return PersonaRestangular.one(url, this.id).one('accionistas', id).remove();
             }
+
         };
 
         PersonaRestangular.extendModel(url, function(obj) {
@@ -448,6 +455,47 @@
             }
         });
         PersonaRestangular.extendModel(urlBuscar, function(obj) {
+            if(angular.isObject(obj)) {
+                return angular.extend(obj, modelMethos);
+            } else {
+                return angular.extend({id: obj}, modelMethos)
+            }
+        });
+
+        return modelMethos;
+
+    }]);
+
+    module.factory('SGAccionista', ['PersonaRestangular',  function(PersonaRestangular) {
+
+        var url = 'accionistas';
+
+        var modelMethos = {
+            $new: function(id){
+                return angular.extend({id: id}, modelMethos);
+            },
+            $build: function(){
+                return angular.extend({id: undefined}, modelMethos, {$save: function(){
+                    return PersonaRestangular.all(url).post(this);
+                }});
+            },
+            $save: function() {
+                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
+            },
+
+            $find: function(id){
+                return PersonaRestangular.one(url, id).get();
+            },
+            $search: function(queryParams){
+                return PersonaRestangular.all(url).getList(queryParams);
+            },
+
+            $remove: function(id){
+                return PersonaRestangular.one(url, id).remove();
+            }
+        };
+
+        PersonaRestangular.extendModel(url, function(obj) {
             if(angular.isObject(obj)) {
                 return angular.extend(obj, modelMethos);
             } else {
