@@ -1,367 +1,146 @@
 'use strict';
 
-(function(){
+(function () {
 
     var module = angular.module('sg-persona', ['restangular', 'ngFileUpload']);
 
-    module.provider('sgPersona', function() {
+    module.provider('sgPersona', function () {
 
         this.restUrl = 'http://localhost';
 
-        this.$get = function() {
+        this.$get = function () {
             var restUrl = this.restUrl;
             return {
-                getRestUrl: function() {
+                getRestUrl: function () {
                     return restUrl;
                 }
             }
         };
 
-        this.setRestUrl = function(restUrl) {
+        this.setRestUrl = function (restUrl) {
             this.restUrl = restUrl;
         };
     });
 
-    module.factory('PersonaRestangular', ['Restangular', 'sgPersona', function(Restangular, sgPersona) {
-        return Restangular.withConfig(function(RestangularConfigurer) {
+    module.factory('PersonaRestangular', ['Restangular', 'sgPersona', function (Restangular, sgPersona) {
+        return Restangular.withConfig(function (RestangularConfigurer) {
             RestangularConfigurer.setBaseUrl(sgPersona.getRestUrl());
         });
     }]);
 
-    module.factory('PersonaAbstractModel', ['PersonaRestangular', function(PersonaRestangular){
-        var url = '';
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
+    var RestObject = function (path, restangular, extendMethods) {
+        var modelMethods = {
+
+            /**
+             * Retorna url*/
+            $getBasePath: function () {
+                return path;
             },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
+            /**
+             * Retorna la url completa del objeto*/
+            $getAbsoluteUrl: function () {
+                return restangular.one(path, this.id).getRestangularUrl();
             },
-            $save: function() {
-                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
+            /**
+             * Concatena la url de subresource con la url base y la retorna*/
+            $concatSubResourcePath: function (subResourcePath) {
+                return this.$getBasePath() + '/' + this.id + '/' + subResourcePath;
             },
 
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
+
+            $new: function (id) {
+                return angular.extend({id: id}, modelMethods);
             },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
+            $build: function () {
+                return angular.extend({id: undefined}, modelMethods, {
+                    $save: function () {
+                        return restangular.all(path).post(this);
+                    }
+                });
             },
 
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
-            }
-        }
-    }]);
-
-    module.factory('SGEstadoCivil', ['PersonaRestangular',  function(PersonaRestangular) {
-
-        var url = 'estadosCiviles';
-        var urlCount = url + '/count';
-
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
-            },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
-            },
-            $save: function() {
-                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
+            $search: function (queryParams) {
+                return restangular.all(path).customGET('', queryParams);
             },
 
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
+            $find: function (id) {
+                return restangular.one(path, id).get();
             },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
+            $save: function () {
+                return restangular.one(path, this.id).customPUT(restangular.copy(this), '', {}, {});
+            },
+            $saveSent: function (obj) {
+                return restangular.all(path).post(obj);
             },
 
-            $count: function(){
-                return PersonaRestangular.one(urlCount).get();
+            $enable: function () {
+                return restangular.one(path, this.id).all('enable').post();
             },
-
-            $disable: function(){
-                return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
+            $disable: function () {
+                return restangular.one(path, this.id).all('disable').post();
             },
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
+            $remove: function () {
+                return restangular.one(path, this.id).remove();
             }
         };
 
-        PersonaRestangular.extendModel(url, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
+        modelMethods = angular.extend(modelMethods, extendMethods);
+
+        restangular.extendModel(path, function (obj) {
+            if (angular.isObject(obj)) {
+                return angular.extend(obj, modelMethods);
             } else {
-                return angular.extend({id: obj}, modelMethos)
+                return angular.extend({id: obj}, modelMethods)
             }
         });
 
-        return modelMethos;
-
-    }]);
-
-    module.factory('SGSexo', ['PersonaRestangular',  function(PersonaRestangular) {
-
-        var url = 'sexos';
-        var urlCount = url + '/count';
-
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
-            },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
-            },
-            $save: function() {
-                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
-            },
-
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
-            },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
-            },
-
-            $count: function(){
-                return PersonaRestangular.one(urlCount).get();
-            },
-
-            $disable: function(){
-                return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
-            },
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
-            }
-        };
-
-        PersonaRestangular.extendModel(url, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
+        restangular.extendCollection(path, function (collection) {
+            angular.forEach(collection, function (row) {
+                angular.extend(row, modelMethods);
+            });
+            return collection;
         });
 
-        return modelMethos;
+        return modelMethods;
+    };
 
+    module.factory('SGEstadoCivil', ['PersonaRestangular', function (PersonaRestangular) {
+        var estadosCivilesResource = RestObject('estadosCiviles', PersonaRestangular);
+        return estadosCivilesResource;
     }]);
 
-    module.factory('SGTipoDocumento', ['PersonaRestangular',  function(PersonaRestangular) {
-
-        var url = 'tipoDocumentos';
-        var urlCount = url + '/count';
-
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
-            },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
-            },
-            $save: function() {
-                return PersonaRestangular.one(url, this.abreviatura).customPUT(PersonaRestangular.copy(this),'',{},{});
-            },
-
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
-            },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
-            },
-
-            $searchByPersonaNatural: function(){
-                return PersonaRestangular.all(url).getList({tipoPersona: 'natural'});
-            },
-            $searchByPersonaJuridica: function(){
-                return PersonaRestangular.all(url).getList({tipoPersona: 'juridica'});
-            },
-
-            $count: function(){
-                return PersonaRestangular.one(urlCount).get();
-            },
-
-
-            $disable: function(){
-                return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
-            },
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
-            }
-        };
-
-        PersonaRestangular.extendModel(url, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
-        });
-
-        return modelMethos;
-
+    module.factory('SGSexo', ['PersonaRestangular', function (PersonaRestangular) {
+        var sexosResource = RestObject('sexos', PersonaRestangular);
+        return sexosResource;
     }]);
 
-    module.factory('SGTipoEmpresa', ['PersonaRestangular',  function(PersonaRestangular) {
-
-        var url = 'tiposEmpresa';
-        var urlCount = url + '/count';
-
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
-            },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
-            },
-            $save: function() {
-                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
-            },
-
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
-            },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
-            },
-
-            $count: function(){
-                return PersonaRestangular.one(urlCount).get();
-            },
-
-            $disable: function(){
-                return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
-            },
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
-            }
-        };
-
-        PersonaRestangular.extendModel(url, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
-        });
-
-        return modelMethos;
-
+    module.factory('SGTipoEmpresa', ['PersonaRestangular', function (PersonaRestangular) {
+        var sexosResource = RestObject('tiposEmpresa', PersonaRestangular);
+        return sexosResource;
     }]);
 
-    module.factory('SGTipoPersona', ['PersonaRestangular',  function(PersonaRestangular) {
-
-        var url = 'tiposPersona';
-        var urlCount = url + '/count';
-
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
-            },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
-            },
-            $save: function() {
-                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
-            },
-
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
-            },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
-            },
-
-            $count: function(){
-                return PersonaRestangular.one(urlCount).get();
-            },
-
-            $disable: function(){
-                return PersonaRestangular.all(url+'/'+this.id+'/disable').post();
-            },
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
-            }
-        };
-
-        PersonaRestangular.extendModel(url, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
-        });
-
-        return modelMethos;
-
+    module.factory('SGTipoPersona', ['PersonaRestangular', function (PersonaRestangular) {
+        var tiposPersonaResource = RestObject('tiposPersona', PersonaRestangular);
+        return tiposPersonaResource;
     }]);
 
-    module.factory('SGPersonaNatural', ['PersonaRestangular', 'Upload',  function(PersonaRestangular, Upload) {
+    module.factory('SGTipoDocumento', ['PersonaRestangular', function (PersonaRestangular) {
+        var tiposDocumentoResource = RestObject('tipoDocumentos', PersonaRestangular);
+        return tiposDocumentoResource;
+    }]);
 
-        var url = 'personas/naturales';
-        var urlBuscar = url +'/buscar';
-        var urlCount = url + '/count';
+    module.factory('SGPersonaNatural', ['PersonaRestangular', 'Upload', function (PersonaRestangular, Upload) {
 
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
-            },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
-            },
-            $save: function() {
-                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
-            },
-
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
-            },
-            $findByTipoNumeroDocumento: function(tipoDocumento, numeroDocumento){
-                var params = {
-                    tipoDocumento: tipoDocumento,
-                    numeroDocumento: numeroDocumento
-                };
-                return PersonaRestangular.one(urlBuscar).get(params);
-            },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
-            },
-
-            $count: function(){
-                return PersonaRestangular.one(urlCount).get();
-            },
-
-            $disable: function(){
-                return PersonaRestangular.one(url, this.id).all('disable').post();
-            },
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
-            },
-
-            $setFoto: function(file){
-                var urlFile = PersonaRestangular.one(url, this.id).all('foto').getRestangularUrl();
+        var extendMethod = {
+            $setFoto: function (file) {
+                var urlFile = PersonaRestangular.one(this.$getBasePath(), this.id).all('foto').getRestangularUrl();
                 return Upload.upload({
                     url: urlFile,
                     file: file
                 });
             },
-            $setFirma: function(file){
-                var urlFile = PersonaRestangular.one(url, this.id).all('firma').getRestangularUrl();
+            $setFirma: function (file) {
+                var urlFile = PersonaRestangular.one(this.$getBasePath(), this.id).all('firma').getRestangularUrl();
                 return Upload.upload({
                     url: urlFile,
                     file: file
@@ -369,142 +148,28 @@
             }
         };
 
-        PersonaRestangular.extendModel(url, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
-        });
-        PersonaRestangular.extendModel(urlBuscar, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
-        });
+        var personaNaturalResource = RestObject('personas/naturales', PersonaRestangular, extendMethod);
 
-        return modelMethos;
-
+        return personaNaturalResource;
     }]);
 
-    module.factory('SGPersonaJuridica', ['PersonaRestangular',  function(PersonaRestangular) {
+    module.factory('SGPersonaJuridica', ['PersonaRestangular', 'Upload', function (PersonaRestangular) {
 
-        var url = 'personas/juridicas';
-        var urlBuscar = url +'/buscar';
-        var urlCount = url + '/count';
+        var personaJuridicaResource = RestObject('personas/juridicas', PersonaRestangular, extendMethod);
 
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
-            },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
-            },
-            $save: function() {
-                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
-            },
+        /**
+         * Accionistas*
+         * */
+        personaJuridicaResource.SGAccionista = function () {
+            var extendMethod = {};
 
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
-            },
-            $findByTipoNumeroDocumento: function(tipoDocumento, numeroDocumento){
-                var params = {
-                    tipoDocumento: tipoDocumento,
-                    numeroDocumento: numeroDocumento
-                };
-                return PersonaRestangular.one(urlBuscar).get(params);
-            },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
-            },
+            var accionistaSubResource = RestObject(this.$concatSubResourcePath('accionistas'), PersonaRestangular, extendMethod);
 
-            $count: function(){
-                return PersonaRestangular.one(urlCount).get();
-            },
-
-            $disable: function(){
-                return PersonaRestangular.one(url, this.id).all('disable').post();
-            },
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
-            },
-
-            $getAccionistas: function(queryParams){
-                return PersonaRestangular.one(url, this.id).all('accionistas').getList(queryParams);
-            },
-            $addAccionista: function(obj){
-                return PersonaRestangular.one(url, this.id).all('accionistas').post(obj);
-            },
-            $updateAccionista: function (id, obj) {
-                return PersonaRestangular.one(url, this.id).one('accionistas', id).customPUT(PersonaRestangular.copy(obj), '', {}, {});
-            },
-            $removeAccionista: function (id) {
-                return PersonaRestangular.one(url, this.id).one('accionistas', id).remove();
-            }
-
+            return accionistaSubResource;
         };
 
-        PersonaRestangular.extendModel(url, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
-        });
-        PersonaRestangular.extendModel(urlBuscar, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
-        });
-
-        return modelMethos;
-
+        return personaJuridicaResource;
     }]);
 
-    module.factory('SGAccionista', ['PersonaRestangular',  function(PersonaRestangular) {
-
-        var url = 'accionistas';
-
-        var modelMethos = {
-            $new: function(id){
-                return angular.extend({id: id}, modelMethos);
-            },
-            $build: function(){
-                return angular.extend({id: undefined}, modelMethos, {$save: function(){
-                    return PersonaRestangular.all(url).post(this);
-                }});
-            },
-            $save: function() {
-                return PersonaRestangular.one(url, this.id).customPUT(PersonaRestangular.copy(this),'',{},{});
-            },
-
-            $find: function(id){
-                return PersonaRestangular.one(url, id).get();
-            },
-            $search: function(queryParams){
-                return PersonaRestangular.all(url).getList(queryParams);
-            },
-
-            $remove: function(id){
-                return PersonaRestangular.one(url, id).remove();
-            }
-        };
-
-        PersonaRestangular.extendModel(url, function(obj) {
-            if(angular.isObject(obj)) {
-                return angular.extend(obj, modelMethos);
-            } else {
-                return angular.extend({id: obj}, modelMethos)
-            }
-        });
-
-        return modelMethos;
-
-    }]);
 
 })();
