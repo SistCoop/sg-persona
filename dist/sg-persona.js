@@ -33,6 +33,12 @@
 
             /**
              * Retorna url*/
+            $getModelMethods: function () {
+                return modelMethods;
+            },
+
+            /**
+             * Retorna url*/
             $getBasePath: function () {
                 return path;
             },
@@ -125,7 +131,20 @@
     }]);
 
     module.factory('SGTipoDocumento', ['PersonaRestangular', function (PersonaRestangular) {
-        var tiposDocumentoResource = RestObject('tipoDocumentos', PersonaRestangular);
+        var extendMethod = {
+            $build: function () {
+                return angular.extend({abreviatura: undefined}, this.$getModelMethods(), {
+                    $save: function () {
+                        return PersonaRestangular.all(this.$getBasePath()).post(this);
+                    }
+                });
+            },
+            $save: function () {
+                return PersonaRestangular.one(this.$getBasePath(), this.abreviatura).customPUT(PersonaRestangular.copy(this), '', {}, {});
+            }
+        };
+
+        var tiposDocumentoResource = RestObject('tipoDocumentos', PersonaRestangular, extendMethod);
         return tiposDocumentoResource;
     }]);
 
