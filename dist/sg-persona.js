@@ -132,6 +132,9 @@
 
     module.factory('SGTipoDocumento', ['PersonaRestangular', function (PersonaRestangular) {
         var extendMethod = {
+            $new: function (abreviatura) {
+                return angular.extend({abreviatura: abreviatura}, this.$getModelMethods());
+            },
             $build: function () {
                 return angular.extend({abreviatura: undefined}, this.$getModelMethods(), {
                     $save: function () {
@@ -141,6 +144,15 @@
             },
             $save: function () {
                 return PersonaRestangular.one(this.$getBasePath(), this.abreviatura).customPUT(PersonaRestangular.copy(this), '', {}, {});
+            },
+            $enable: function () {
+                return PersonaRestangular.one(this.$getBasePath(), this.abreviatura).all('enable').post();
+            },
+            $disable: function () {
+                return PersonaRestangular.one(this.$getBasePath(), this.abreviatura).all('disable').post();
+            },
+            $remove: function () {
+                return PersonaRestangular.one(this.$getBasePath(), this.abreviatura).remove();
             }
         };
 
