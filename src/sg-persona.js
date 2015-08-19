@@ -186,6 +186,8 @@
 
     module.factory('SGPersonaJuridica', ['PersonaRestangular', 'Upload', function (PersonaRestangular) {
 
+        var extendMethod = {};
+
         var personaJuridicaResource = RestObject('personas/juridicas', PersonaRestangular, extendMethod);
 
         /**
