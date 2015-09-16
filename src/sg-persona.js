@@ -126,12 +126,12 @@
         }
 
         restangular.extendModel(path, function (obj) {
-            automaticExtend(obj);
+            automaticExtend(obj, modelMethods);
             return obj;
         });
 
         restangular.extendCollection(path, function (collection) {
-            automaticExtend(collection);
+            automaticExtend(collection, modelMethods);
             return collection;
         });
 
